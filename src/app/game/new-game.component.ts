@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {GameService} from "./game.service";
 
 @Component({
-  selector: 'app-new-game',
+  selector: 'app-game',
   template: `
     <button (click)="createGame()">Create</button>
   `,
