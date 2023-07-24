@@ -1,14 +1,22 @@
 import {Component, OnInit} from '@angular/core';
 import {GameService} from "./game.service";
-import {Game, IGame} from "../../model/game";
+import {Game} from "../../model/game";
 
 @Component({
   selector: 'app-game',
   template: `
-    <p>
+    <div>
       {{game.getState()}}
+    </div>
+
+    <div>
       {{game?.white?.name}} vs {{game?.black?.name}}
-    </p>
+    </div>
+
+    <board [board]="game.board!!" *ngIf="game.getState() === 'Live'">
+
+    </board>
+
   `,
   styles: []
 })

@@ -1,3 +1,5 @@
+import {Board} from "./board";
+
 export interface IGame {
   id: string
   white: IPlayer
@@ -12,18 +14,12 @@ export interface IPlayer {
 export class Game {
   private state: GameState
 
-  id: string
-  white: IPlayer
-  black: IPlayer | null = null
+  board: Board | null = null
 
-
-  constructor(id: string, white: IPlayer, black: IPlayer | null) {
-    this.id = id;
-    this.white = white;
-    this.black = black
-
+  constructor(public id: string, public white: IPlayer, public black: IPlayer | null) {
     if (black) {
       this.state = new LiveGameState(this, this.setState.bind(this))
+      this.board = Board.build()
     } else {
       this.state = new PendingGameState(this, this.setState.bind(this))
     }
@@ -65,6 +61,7 @@ class PendingGameState extends GameState {
   addPlayer(player: IPlayer): void {
     this.context.black = player
     let newState = new LiveGameState(this.context, this.updateState)
+    this.context.board = Board.build()
     this.updateState(newState)
   }
 }
