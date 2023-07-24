@@ -5,8 +5,8 @@ import {Board} from "../../../model/board";
   selector: 'board',
   template: `
     <div class="board">
-      <div class="rank" *ngFor="let rank of board.squares">
-        <app-square [piece]="square" *ngFor="let square of rank"></app-square>
+      <div class="rank" *ngFor="let rank of board.squares; let i = index">
+        <app-square [position]="[i,j]"  [piece]="square" *ngFor="let square of rank let j=index"></app-square>
       </div>
     </div>
   `,
@@ -14,12 +14,12 @@ import {Board} from "../../../model/board";
     `
       .rank {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
       }
 
       .board {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
       }
     `
   ]

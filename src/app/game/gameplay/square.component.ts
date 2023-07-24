@@ -4,7 +4,7 @@ import {Piece} from "../../../model/piece";
 @Component({
   selector: 'app-square',
   template: `
-    <div class="square">
+    <div [className]="squareColor()">
       <div class="square-contents" *ngIf="piece">
         <app-piece [piece]="piece"></app-piece>
       </div>
@@ -22,6 +22,14 @@ import {Piece} from "../../../model/piece";
           height: 40px;
         }
 
+        .dark-square{
+          background-color: gray;
+        }
+
+        .light-square{
+          background-color: white;
+        }
+
         .square-contents {
           width: 100%;
           height: 100%;
@@ -31,11 +39,19 @@ import {Piece} from "../../../model/piece";
 })
 export class SquareComponent implements OnInit {
   @Input() piece: Piece | null = null
-
+  @Input() position!: [number, number]
   constructor() {
   }
 
   ngOnInit(): void {
+  }
+
+  squareColor(): string{
+    if ((this.position[0] + this.position[1])%2 == 1){
+      return "square dark-square"
+    } else {
+      return "square light-square"
+    }
   }
 
 }

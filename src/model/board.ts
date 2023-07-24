@@ -19,7 +19,7 @@ export class Board {
     this.pawnRow(PieceColor.BLACK, squares)
     this.homeRow(PieceColor.WHITE, squares)
     this.homeRow(PieceColor.BLACK, squares)
-
+    console.log(squares)
     return new Board(squares)
   }
 
