@@ -6,6 +6,7 @@ import {Game, IGame} from "../../model/game";
   selector: 'app-game',
   template: `
     <p>
+      {{game.getState()}}
       {{game?.white?.name}} vs {{game?.black?.name}}
     </p>
   `,
