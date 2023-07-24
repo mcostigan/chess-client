@@ -5,7 +5,7 @@ import {NewGameModule} from "./new-game/new-game.module";
 import {AppComponent} from './app.component';
 import {RouterModule, Routes} from '@angular/router'
 import {GameModule} from "./game/game.module";
-
+import {StompConfig, StompService} from '@stomp/ng2-stompjs';
 const routes: Routes = []
 
 @NgModule({
@@ -19,7 +19,7 @@ const routes: Routes = []
     GameModule,
     RouterModule.forRoot(routes)
   ],
-  providers: [],
+  providers: [StompService, StompConfig],
   bootstrap: [AppComponent]
 })
 export class AppModule {

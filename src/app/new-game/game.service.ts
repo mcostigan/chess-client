@@ -1,28 +1,36 @@
 import {Injectable} from '@angular/core';
 import {HttpService} from "../service/http.service";
 import {Router} from "@angular/router";
-import {IGame} from "../../model/game";
+import {Game, IGame, IPlayer} from "../../model/game";
+import {GameFactory} from "./game.factory";
+import {WebSocketService} from "../service/web-socket.service";
+import {map, Observable} from "rxjs";
+import {IMessage} from "@stomp/stompjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameService {
 
-  constructor(private httpService: HttpService, private router: Router) {
+  constructor(private httpService: HttpService, private router: Router, private gameFactory: GameFactory, private webSocketService: WebSocketService) {
   }
 
-  private currentGame: IGame | undefined
+  private currentGame: Game | undefined
 
   createGame(minExperience: string = "NOVICE", maxExperience: string = "EXPERT") {
-    this.httpService.post< IGame >("game", {minExperience, maxExperience}, true).subscribe(
+    this.httpService.post<IGame>("game", {minExperience, maxExperience}, true).subscribe(
       (game) => {
-        this.currentGame = game
-        this.router.navigateByUrl(`/game/${game.id}`)
+        this.currentGame = this.gameFactory.get(game, this.subscribeToGameAddPlayer.bind(this))
+        void this.router.navigateByUrl(`/game/${game.id}`)
       }
     )
   }
+  subscribeToGameAddPlayer(gameId: string): Observable<IPlayer> {
+    return this.webSocketService.subscription(`/topic/game/${gameId}/players`).pipe(
+      map((m: IMessage)=> JSON.parse(m.body) as IPlayer))
+  }
 
-  getCurrentGame(): IGame {
+  getCurrentGame(): Game {
     return this.currentGame!!
   }
 }
