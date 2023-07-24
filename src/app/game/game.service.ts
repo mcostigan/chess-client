@@ -25,9 +25,14 @@ export class GameService {
       }
     )
   }
+
   subscribeToGameAddPlayer(gameId: string): Observable<IPlayer> {
     return this.webSocketService.subscription(`/topic/game/${gameId}/players`).pipe(
-      map((m: IMessage)=> JSON.parse(m.body) as IPlayer))
+      map((m: IMessage) => JSON.parse(m.body) as IPlayer))
+  }
+
+  sendMove(gameId: string, move: any) {
+    return this.webSocketService.publish(`/app/game/${gameId}/move`, move)
   }
 
   getCurrentGame(): Game {
