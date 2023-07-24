@@ -14,11 +14,15 @@ export class GameService {
   private currentGame: IGame | undefined
 
   createGame(minExperience: string = "NOVICE", maxExperience: string = "EXPERT") {
-    this.httpService.post<{ id: string }>("game", {minExperience, maxExperience}, true).subscribe(
+    this.httpService.post< IGame >("game", {minExperience, maxExperience}, true).subscribe(
       (game) => {
         this.currentGame = game
         this.router.navigateByUrl(`/game/${game.id}`)
       }
     )
+  }
+
+  getCurrentGame(): IGame {
+    return this.currentGame!!
   }
 }
