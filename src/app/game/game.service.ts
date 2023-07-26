@@ -6,6 +6,7 @@ import {GameFactory} from "./game.factory";
 import {WebSocketService} from "../service/web-socket.service";
 import {map, Observable} from "rxjs";
 import {IMessage} from "@stomp/stompjs";
+import {IClientMove, IServerMove} from "../../model/move";
 
 @Injectable({
   providedIn: 'root'
@@ -20,15 +21,21 @@ export class GameService {
   createGame(minExperience: string = "NOVICE", maxExperience: string = "EXPERT") {
     this.httpService.post<IGame>("game", {minExperience, maxExperience}, true).subscribe(
       (game) => {
-        this.currentGame = this.gameFactory.get(game, this.subscribeToGameAddPlayer.bind(this))
+        this.currentGame = this.gameFactory.get(game, this.subscribeToGameAddPlayer.bind(this), this.subscribeToGameMove.bind(this))
         void this.router.navigateByUrl(`/game/${game.id}`)
       }
     )
   }
 
-  subscribeToGameAddPlayer(gameId: string): Observable<IPlayer> {
+  private subscribeToGameAddPlayer(gameId: string): Observable<IPlayer> {
     return this.webSocketService.subscription(`/topic/game/${gameId}/players`).pipe(
       map((m: IMessage) => JSON.parse(m.body) as IPlayer))
+  }
+
+  private subscribeToGameMove(gameId: string): Observable<IServerMove> {
+    return this.webSocketService.subscription(`/topic/game/${gameId}/move`).pipe(
+      map((m: IMessage) => JSON.parse(m.body) as IServerMove)
+    )
   }
 
   sendMove(gameId: string, move: any) {
