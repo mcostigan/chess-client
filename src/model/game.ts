@@ -1,4 +1,6 @@
 import {Board} from "./board";
+import {MoveExecutionService} from "../app/game/move-execution.service";
+import {IServerMove} from "./move";
 
 export interface IGame {
   id: string
@@ -16,7 +18,7 @@ export class Game {
 
   board: Board | null = null
 
-  constructor(public id: string, public white: IPlayer, public black: IPlayer | null) {
+  constructor(public id: string, public white: IPlayer, public black: IPlayer | null, private moveExecutionService: MoveExecutionService) {
     if (black) {
       this.state = new LiveGameState(this, this.setState.bind(this))
       this.board = Board.build()
@@ -35,6 +37,10 @@ export class Game {
 
   getState() {
     return this.state.name
+  }
+
+  move(move: IServerMove) {
+    this.moveExecutionService.execute(this.board!!, move)
   }
 
 

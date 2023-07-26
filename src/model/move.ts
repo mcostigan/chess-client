@@ -5,7 +5,7 @@ export interface IClientMove {
 }
 
 export interface IServerMove extends IClientMove{
-  describe: string
+  description: string
   isAttack: boolean
   isPromotion: boolean
   isCastle: boolean
