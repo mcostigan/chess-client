@@ -32,7 +32,7 @@ export class GameService {
   }
 
   sendMove(gameId: string, move: any) {
-    return this.webSocketService.publish(`/app/game/${gameId}/move`, move)
+    return this.webSocketService.publish(`/app/game/${gameId}/move`, JSON.stringify(move))
   }
 
   getCurrentGame(): Game {
