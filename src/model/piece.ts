@@ -4,10 +4,6 @@ export abstract class Piece {
     return this._isAlive;
   }
 
-  set isAlive(value: boolean) {
-    this._isAlive = value;
-  }
-
   protected constructor(readonly color: PieceColor) {
   }
 
