@@ -18,8 +18,8 @@ import {Piece} from "../../../model/piece";
     `
         .square {
           border: 1px solid black;
-          width: 40px;
-          height: 40px;
+          width: 80px;
+          height: 80px;
         }
 
         .dark-square{
