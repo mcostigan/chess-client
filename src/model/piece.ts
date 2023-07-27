@@ -1,34 +1,42 @@
 export abstract class Piece {
-  protected constructor(public position: [number, number], readonly color: PieceColor) {
+  private _isAlive: boolean = true
+  get isAlive(): boolean {
+    return this._isAlive;
   }
+
+  set isAlive(value: boolean) {
+    this._isAlive = value;
+  }
+
+  protected constructor(readonly color: PieceColor) {
+  }
+
 
   abstract type: PieceType
 
-  move(position: [number, number]) {
-    this.position = position
-  }
 
   kill() {
-    this.position = [-1, -1]
+    this._isAlive = false
   }
 
 }
 
 export class PieceFactory {
-  get(type: PieceType, position: [number, number], color: PieceColor): Piece {
+  get(type: PieceType, color: PieceColor, queenSideRook: Rook | undefined = undefined, kingSideRook: Rook | undefined = undefined): Piece {
     switch (type) {
       case PieceType.BISHOP:
-        return new Bishop(position, color)
+        return new Bishop(color)
       case PieceType.KING:
-        return new King(position, color)
+        // TODO: assert rooks are defined
+        return new King(color)
       case PieceType.KNIGHT:
-        return new Knight(position, color)
+        return new Knight(color)
       case PieceType.PAWN:
-        return new Pawn(position, color)
+        return new Pawn(color)
       case PieceType.QUEEN:
-        return new Queen(position, color)
+        return new Queen(color)
       case PieceType.ROOK:
-        return new Rook(position, color)
+        return new Rook(color)
     }
   }
 }
@@ -53,8 +61,8 @@ export interface Promotable {
 
 class Pawn extends Piece implements Promotable {
 
-  constructor(position: [number, number], color: PieceColor) {
-    super(position, color);
+  constructor(color: PieceColor) {
+    super(color);
   }
 
   type: PieceType = PieceType.PAWN;
@@ -66,8 +74,8 @@ class Pawn extends Piece implements Promotable {
 
 class Rook extends Piece {
 
-  constructor(position: [number, number], color: PieceColor) {
-    super(position, color);
+  constructor(color: PieceColor) {
+    super(color);
   }
 
   type: PieceType = PieceType.ROOK;
@@ -75,8 +83,8 @@ class Rook extends Piece {
 
 class Bishop extends Piece {
 
-  constructor(position: [number, number], color: PieceColor) {
-    super(position, color);
+  constructor(color: PieceColor) {
+    super(color);
   }
 
   type: PieceType = PieceType.BISHOP;
@@ -84,8 +92,8 @@ class Bishop extends Piece {
 
 class Knight extends Piece {
 
-  constructor(position: [number, number], color: PieceColor) {
-    super(position, color);
+  constructor(color: PieceColor) {
+    super(color);
   }
 
   type: PieceType = PieceType.KNIGHT;
@@ -93,8 +101,8 @@ class Knight extends Piece {
 
 class Queen extends Piece {
 
-  constructor(position: [number, number], color: PieceColor) {
-    super(position, color);
+  constructor(color: PieceColor) {
+    super(color);
   }
 
   type: PieceType = PieceType.QUEEN;
@@ -102,8 +110,8 @@ class Queen extends Piece {
 
 class King extends Piece {
 
-  constructor(position: [number, number], color: PieceColor) {
-    super(position, color);
+  constructor(color: PieceColor) {
+    super(color);
   }
 
   type: PieceType = PieceType.KING;
