@@ -8,6 +8,10 @@ export abstract class Piece {
     this.position = position
   }
 
+  kill() {
+    this.position = [-1, -1]
+  }
+
 }
 
 export class PieceFactory {

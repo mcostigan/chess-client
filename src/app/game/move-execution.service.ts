@@ -11,7 +11,23 @@ export class MoveExecutionService {
   }
 
   execute(board: Board, move: IServerMove) {
-    board.squares[move.to.first][move.to.second] = board.squares[move.from.first][move.from.second]
+    let piece = board.squares[move.from.first][move.from.second]!!
+    let targetPiece = board.squares[move.to.first][move.to.second]
+
+    board.squares[move.to.first][move.to.second] = piece
+    piece.position = [move.to.first, move.to.second]
+
     board.squares[move.from.first][move.from.second] = null
+    if (targetPiece != null) {
+      targetPiece.kill()
+    }
+
+    if (move.isPromotion) {
+      //TODO: promote piece
+    }
+
+    if (move.isCastle) {
+      // TODO: castle
+    }
   }
 }
