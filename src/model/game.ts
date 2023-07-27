@@ -1,6 +1,7 @@
 import {Board} from "./board";
 import {MoveExecutionService} from "../app/game/move-execution.service";
 import {IServerMove} from "./move";
+import {PieceColor} from "./piece";
 
 export interface IGame {
   id: string
@@ -15,15 +16,20 @@ export interface IPlayer {
 
 export class Game {
   private state: GameState
-
+  private _turn: PieceColor = PieceColor.WHITE
   board: Board | null = null
 
-  constructor(public id: string, public white: IPlayer, public black: IPlayer | null, private moveExecutionService: MoveExecutionService) {
+
+  get turn(): PieceColor {
+    return this._turn;
+  }
+
+  constructor(public id: string, public white: IPlayer, public black: IPlayer | null, public moveExecutionService: MoveExecutionService) {
     if (black) {
-      this.state = new LiveGameState(this, this.setState.bind(this))
+      this.state = new LiveGameState(this, this.setState.bind(this), this.setTurn.bind(this))
       this.board = Board.build()
     } else {
-      this.state = new PendingGameState(this, this.setState.bind(this))
+      this.state = new PendingGameState(this, this.setState.bind(this), this.setTurn.bind(this))
     }
   }
 
@@ -35,24 +41,30 @@ export class Game {
     this.state = state
   }
 
+  private setTurn(turn: PieceColor) {
+    this._turn = turn
+  }
+
   getState() {
     return this.state.name
   }
 
   move(move: IServerMove) {
-    this.moveExecutionService.execute(this.board!!, move)
+    this.state.move(move)
   }
 
 
 }
 
 abstract class GameState {
-  protected constructor(protected context: Game, protected updateState: (s: GameState) => void) {
+  protected constructor(protected context: Game, protected updateState: (s: GameState) => void, protected updateTurn: (t: PieceColor) => void) {
   }
 
   abstract name: string
 
   abstract addPlayer(player: IPlayer): void
+
+  abstract move(move: IServerMove): void
 
 }
 
@@ -60,28 +72,40 @@ class PendingGameState extends GameState {
 
   readonly name = "Pending"
 
-  constructor(context: Game, updateState: (s: GameState) => void) {
-    super(context, updateState);
+  constructor(context: Game, updateState: (s: GameState) => void, updateTurn: (t: PieceColor) => void) {
+    super(context, updateState, updateTurn);
   }
 
   addPlayer(player: IPlayer): void {
     this.context.black = player
-    let newState = new LiveGameState(this.context, this.updateState)
+    let newState = new LiveGameState(this.context, this.updateState, this.updateTurn)
     this.context.board = Board.build()
     this.updateState(newState)
+  }
+
+  move(move: IServerMove): void {
   }
 }
 
 class LiveGameState extends GameState {
 
 
-  constructor(context: Game, updateState: (s: GameState) => void) {
-    super(context, updateState);
+  constructor(context: Game, updateState: (s: GameState) => void, updateTurn: (t: PieceColor) => void) {
+    super(context, updateState, updateTurn);
   }
 
   addPlayer(player: IPlayer): void {
   }
 
   readonly name: string = "Live"
+
+  move(move: IServerMove): void {
+    this.context.moveExecutionService.execute(this.context.board!!, move)
+    if (move.color === 'WHITE') {
+      this.updateTurn(PieceColor.BLACK)
+    } else {
+      this.updateTurn(PieceColor.WHITE)
+    }
+  }
 
 }

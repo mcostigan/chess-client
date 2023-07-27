@@ -9,6 +9,7 @@ export interface IServerMove extends IClientMove{
   isAttack: boolean
   isPromotion: boolean
   isCastle: boolean
+  color: string
 
 }
 
