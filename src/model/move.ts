@@ -13,6 +13,12 @@ export interface IServerMove extends IClientMove{
 
 }
 
+export interface IMoveResult {
+  move: IServerMove
+  status: string
+  availableMoves: IServerMove[]
+}
+
 export interface Pair<T> {
   first: T
   second: T

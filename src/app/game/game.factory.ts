@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Game, IGame, IPlayer} from "../../model/game";
 import {Observable} from "rxjs";
-import {IClientMove, IServerMove} from "../../model/move";
+import {IClientMove, IMoveResult, IServerMove} from "../../model/move";
 import {MoveExecutionService} from "./move-execution.service";
 
 @Injectable({
@@ -12,7 +12,7 @@ export class GameFactory {
   constructor(private moveExecutionService: MoveExecutionService) {
   }
 
-  get(game: IGame, onAddPlayer: (gameId: string) => Observable<IPlayer>, onMove: (gameId: string) => Observable<IServerMove>): Game {
+  get(game: IGame, onAddPlayer: (gameId: string) => Observable<IPlayer>, onMove: (gameId: string) => Observable<IMoveResult>): Game {
     let g = new Game(game.id, game.white, game.black, this.moveExecutionService)
 
     // subscribe game to new players
@@ -23,9 +23,9 @@ export class GameFactory {
     )
 
     onMove(game.id).subscribe(
-      (move: IServerMove) => {
-        console.log(move.description)
-        g.move(move)
+      (move: IMoveResult) => {
+        console.log(move)
+        g.move(move.move)
       }
     )
 

@@ -6,7 +6,7 @@ import {GameFactory} from "./game.factory";
 import {WebSocketService} from "../service/web-socket.service";
 import {map, Observable} from "rxjs";
 import {IMessage} from "@stomp/stompjs";
-import {IClientMove, IServerMove} from "../../model/move";
+import {IClientMove, IMoveResult, IServerMove} from "../../model/move";
 
 @Injectable({
   providedIn: 'root'
@@ -32,9 +32,9 @@ export class GameService {
       map((m: IMessage) => JSON.parse(m.body) as IPlayer))
   }
 
-  private subscribeToGameMove(gameId: string): Observable<IServerMove> {
+  private subscribeToGameMove(gameId: string): Observable<IMoveResult> {
     return this.webSocketService.subscription(`/topic/game/${gameId}/move`).pipe(
-      map((m: IMessage) => JSON.parse(m.body) as IServerMove)
+      map((m: IMessage) => JSON.parse(m.body) as IMoveResult)
     )
   }
 
