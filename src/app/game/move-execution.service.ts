@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Board} from "../../model/board";
 import {IServerMove} from "../../model/move";
-import {Piece, PieceType, Promotable} from "../../model/piece";
+import {PieceType, Promotable} from "../../model/piece";
 
 @Injectable({
   providedIn: 'root'

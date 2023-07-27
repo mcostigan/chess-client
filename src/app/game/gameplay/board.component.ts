@@ -6,7 +6,12 @@ import {ActivatedRoute} from "@angular/router";
 @Component({
   selector: 'board',
   template: `
-    <button (click)="move()">Move</button>
+    <div>
+<!--      TODO: better implementation-->
+      <input type="number" [(ngModel)]="fromRow"> <input type="number" [(ngModel)]="fromCol"> <input type="number" [(ngModel)]="toRow"> <input type="number" [(ngModel)]="toCol">
+      <button (click)="move()">Move</button>
+    </div>
+
     <div class="board">
       <div class="rank" *ngFor="let rank of board.squares; let i = index">
         <app-square [position]="[i,j]" [piece]="square" *ngFor="let square of rank let j=index"></app-square>
@@ -32,6 +37,11 @@ export class BoardComponent implements OnInit {
 
   private gameId: string
 
+  fromRow: number = -1
+  fromCol: number = -1
+  toRow: number = -1
+  toCol: number = -1
+
   constructor(private gameService: GameService, private activatedRoute: ActivatedRoute) {
     this.gameId = this.activatedRoute.snapshot.paramMap.get('gameId')!!
   }
@@ -40,7 +50,7 @@ export class BoardComponent implements OnInit {
   }
 
   move() {
-    this.gameService.sendMove(this.gameId, {from: {first: 1, second: 0}, to: {first: 2 ,second: 0}})
+    this.gameService.sendMove(this.gameId, {from: {first: this.fromRow, second: this.fromCol}, to: {first: this.toRow, second: this.toCol}})
   }
 
 }

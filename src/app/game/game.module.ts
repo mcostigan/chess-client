@@ -6,6 +6,7 @@ import {GameComponent} from "./game.component";
 import { BoardComponent } from './gameplay/board.component';
 import { PieceComponent } from './gameplay/piece.component';
 import { SquareComponent } from './gameplay/square.component';
+import {FormsModule} from "@angular/forms";
 
 const routes: Routes = [
   {path: "", component: NewGameComponent},
@@ -22,7 +23,8 @@ const routes: Routes = [
   ],
   imports: [
     CommonModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    FormsModule
   ]
 })
 export class GameModule {
