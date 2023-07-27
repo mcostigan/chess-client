@@ -22,12 +22,11 @@ export abstract class Piece {
 }
 
 export class PieceFactory {
-  get(type: PieceType, color: PieceColor, queenSideRook: Rook | undefined = undefined, kingSideRook: Rook | undefined = undefined): Piece {
+  get(type: PieceType, color: PieceColor): Piece {
     switch (type) {
       case PieceType.BISHOP:
         return new Bishop(color)
       case PieceType.KING:
-        // TODO: assert rooks are defined
         return new King(color)
       case PieceType.KNIGHT:
         return new Knight(color)
