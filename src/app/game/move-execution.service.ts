@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Board} from "../../model/board";
 import {IServerMove} from "../../model/move";
+import {Piece, PieceType, Promotable} from "../../model/piece";
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,9 @@ export class MoveExecutionService {
     }
 
     if (move.isPromotion) {
-      //TODO: promote piece
+      let promotable = piece as unknown as Promotable
+      let target: PieceType = PieceType[move.promotionTarget!! as keyof typeof PieceType];
+      promotable.promote(target)
     }
 
     if (move.isCastle) {

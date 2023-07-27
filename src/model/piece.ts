@@ -47,13 +47,21 @@ export enum PieceType {
   KING
 }
 
-class Pawn extends Piece {
+export interface Promotable {
+  promote(target: PieceType): void
+}
+
+class Pawn extends Piece implements Promotable {
 
   constructor(position: [number, number], color: PieceColor) {
     super(position, color);
   }
 
   type: PieceType = PieceType.PAWN;
+
+  promote(promotionTarget: PieceType) {
+    this.type = promotionTarget
+  }
 }
 
 class Rook extends Piece {
