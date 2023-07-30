@@ -1,3 +1,6 @@
+import {Pair} from "./move";
+import {Square} from "./square";
+
 export abstract class Piece {
   private _isAlive: boolean = true
   get isAlive(): boolean {
@@ -33,6 +36,10 @@ export class PieceFactory {
       case PieceType.ROOK:
         return new Rook(color)
     }
+  }
+
+  getSquare(type: PieceType, color: PieceColor, position: Pair<number>): Square {
+    return new Square(position, this.get(type, color))
   }
 }
 

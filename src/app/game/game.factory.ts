@@ -26,6 +26,7 @@ export class GameFactory {
       (move: IMoveResult) => {
         console.log(move)
         g.move(move.move)
+        g.availableMoves = move.availableMoves
       }
     )
 

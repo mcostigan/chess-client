@@ -13,15 +13,15 @@ export class MoveExecutionService {
 
   execute(board: Board, move: IServerMove) {
     let piece = board.squares[move.from.first][move.from.second]!!
-    let targetPiece = board.squares[move.to.first][move.to.second]
+    let targetSquare = board.squares[move.to.first][move.to.second]
 
     this.move(move.from, move.to, board)
     if (move.isCastle) {
       this.executeCaste(board, move)
     }
 
-    if (targetPiece != null) {
-      targetPiece.kill()
+    if (targetSquare != null) {
+      targetSquare.piece!!.kill()
     }
 
     if (move.isPromotion) {
@@ -46,8 +46,8 @@ export class MoveExecutionService {
   }
 
   private move(from: Pair<number>, to: Pair<number>, board: Board) {
-    board.squares[to.first][to.second] = board.squares[from.first][from.second]!!
-    board.squares[from.first][from.second] = null
+    board.squares[to.first][to.second].piece = board.squares[from.first][from.second].piece
+    board.squares[from.first][from.second].piece = null
 
   }
 

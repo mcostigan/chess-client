@@ -2,19 +2,26 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Board} from "../../../model/board";
 import {GameService} from "../game.service";
 import {ActivatedRoute} from "@angular/router";
+import {IServerMove} from "../../../model/move";
 
 @Component({
   selector: 'board',
   template: `
     <div>
-<!--      TODO: better implementation-->
-      <input type="number" [(ngModel)]="fromRow"> <input type="number" [(ngModel)]="fromCol"> <input type="number" [(ngModel)]="toRow"> <input type="number" [(ngModel)]="toCol">
+      <!--      TODO: better implementation-->
+      <input type="number" [(ngModel)]="fromRow"> <input type="number" [(ngModel)]="fromCol"> <input type="number"
+                                                                                                     [(ngModel)]="toRow">
+      <input type="number" [(ngModel)]="toCol">
       <button (click)="move()">Move</button>
     </div>
 
     <div class="board">
       <div class="rank" *ngFor="let rank of board.squares; let i = index">
-        <app-square [position]="[i,j]" [piece]="square" *ngFor="let square of rank let j=index"></app-square>
+        <app-square [position]="[i,j]" [square]="square"
+                    [highlightMoves]="highlightMoves.bind(this)"
+                    [resetMoves]="board.resetMoves.bind(board)"
+                    [sendMove]="sendMove.bind(this)"
+                    *ngFor="let square of rank let j=index"></app-square>
       </div>
     </div>
   `,
@@ -50,7 +57,20 @@ export class BoardComponent implements OnInit {
   }
 
   move() {
-    this.gameService.sendMove(this.gameId, {from: {first: this.fromRow, second: this.fromCol}, to: {first: this.toRow, second: this.toCol}})
+    this.gameService.sendMove(this.gameId, {
+      from: {first: this.fromRow, second: this.fromCol},
+      to: {first: this.toRow, second: this.toCol}
+    })
+  }
+
+  sendMove(move: IServerMove){
+    this.gameService.sendMove(this.gameId, move)
+  }
+
+  highlightMoves(moves: IServerMove[]) {
+    moves.forEach((move) => {
+      this.board.squares[move.to.first][move.to.second].addMoveTo(move)
+    })
   }
 
 }

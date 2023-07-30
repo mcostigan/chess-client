@@ -26,7 +26,6 @@ export class PieceComponent implements OnInit {
 
   ngOnInit(): void {
     this.unicode = this.pieceDrawer.getUnicode(this.piece.type, this.piece.color)
-    console.log(this.unicode, this.piece)
   }
 
 }

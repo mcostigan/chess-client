@@ -53,7 +53,14 @@ export class Game {
     this.state.move(move)
   }
 
+  set availableMoves(value: IServerMove[]) {
+    console.log(`Adding moves to state ${this.state.name} `)
+    this.state.availableMoves = value
+  }
 
+  get availableMoves(): IServerMove[] {
+    return this.state.availableMoves;
+  }
 }
 
 abstract class GameState {
@@ -65,6 +72,9 @@ abstract class GameState {
   abstract addPlayer(player: IPlayer): void
 
   abstract move(move: IServerMove): void
+
+  abstract get availableMoves(): IServerMove[]
+  abstract set availableMoves(value: IServerMove[])
 
 }
 
@@ -84,6 +94,13 @@ class PendingGameState extends GameState {
   }
 
   move(move: IServerMove): void {
+  }
+
+  get availableMoves(): IServerMove[] {
+    return []
+  }
+
+  set availableMoves(value: IServerMove[]) {
   }
 }
 
@@ -106,6 +123,15 @@ class LiveGameState extends GameState {
     } else {
       this.updateTurn(PieceColor.WHITE)
     }
+  }
+
+
+  get availableMoves(): IServerMove[] {
+    return this.context.board!!.availableMoves;
+  }
+
+  set availableMoves(value: IServerMove[]) {
+    this.context.board!!.availableMoves = value
   }
 
 }
