@@ -29,7 +29,6 @@ export class MoveExecutionService {
       let target: PieceType = PieceType[move.promotionTarget!! as keyof typeof PieceType];
       promotable.promote(target)
     }
-    console.log(board.squares)
   }
 
   private executeCaste(board: Board, move: IServerMove) {

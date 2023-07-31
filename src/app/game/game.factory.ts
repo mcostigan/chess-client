@@ -24,7 +24,6 @@ export class GameFactory {
 
     onMove(game.id).subscribe(
       (move: IMoveResult) => {
-        console.log(move)
         g.move(move.move)
         g.availableMoves = move.availableMoves
       }

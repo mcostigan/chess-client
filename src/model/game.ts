@@ -54,7 +54,6 @@ export class Game {
   }
 
   set availableMoves(value: IServerMove[]) {
-    console.log(`Adding moves to state ${this.state.name} `)
     this.state.availableMoves = value
   }
 
