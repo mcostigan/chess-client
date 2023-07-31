@@ -8,6 +8,8 @@ import {IMessage} from "@stomp/stompjs";
   providedIn: 'root'
 })
 export class WebSocketService {
+  private _isConnected : boolean = false
+
   constructor(private rxStomp: StompService, private tokenService: TokenService) {
     this.rxStomp.configure({
       brokerURL: 'ws://localhost:8080/chess-websocket',
@@ -19,6 +21,7 @@ export class WebSocketService {
   }
 
   publish(topic: string, message: string | undefined = undefined) {
+
     const headers: StompHeaders = {
       Authorization: `Bearer ${this.tokenService.get()}`
     };

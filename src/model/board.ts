@@ -4,8 +4,7 @@ import {Square} from "./square";
 
 export class Board {
 
-  private constructor(public squares: Square[][]) {
-  }
+  private constructor(public squares: Square[][]) {}
 
   resetMoves() {
     this.squares.forEach((row: Square[]) => {

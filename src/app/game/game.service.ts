@@ -6,7 +6,7 @@ import {GameFactory} from "./game.factory";
 import {WebSocketService} from "../service/web-socket.service";
 import {map, Observable} from "rxjs";
 import {IMessage} from "@stomp/stompjs";
-import {IClientMove, IMoveResult, IServerMove} from "../../model/move";
+import {IMoveResult, IServerMove} from "../../model/move";
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,7 @@ export class GameService {
   createGame(minExperience: string = "NOVICE", maxExperience: string = "EXPERT") {
     this.httpService.post<IGame>("game", {minExperience, maxExperience}, true).subscribe(
       (game) => {
-        this.currentGame = this.gameFactory.get(game, this.subscribeToGameAddPlayer.bind(this), this.subscribeToGameMove.bind(this))
+        this.currentGame = this.gameFactory.get(game, this.subscribeToGameAddPlayer.bind(this), this.subscribeToGameMove.bind(this), this.subscribeToMyMoves.bind(this))
         void this.router.navigateByUrl(`/game/${game.id}`)
       }
     )
@@ -35,6 +35,12 @@ export class GameService {
   private subscribeToGameMove(gameId: string): Observable<IMoveResult> {
     return this.webSocketService.subscription(`/topic/game/${gameId}/move`).pipe(
       map((m: IMessage) => JSON.parse(m.body) as IMoveResult)
+    )
+  }
+
+  private subscribeToMyMoves(gameId: string): Observable<IServerMove[]> {
+    return this.webSocketService.subscription(`/user/topic/game/${gameId}/moves`).pipe(
+      map((m: IMessage) => JSON.parse(m.body) as IServerMove[])
     )
   }
 
