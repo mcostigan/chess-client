@@ -131,6 +131,7 @@ class LiveGameState extends GameState {
   }
 
   set availableMoves(value: IServerMove[]) {
+    // TODO: filter move for user color
     this.context.board!!.availableMoves = value
   }
 

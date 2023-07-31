@@ -21,10 +21,8 @@ export class Board {
 
   set availableMoves(moves: IServerMove[]) {
     this.resetMoves()
-    // TODO: filter move for user color
     moves.forEach(
       (move: IServerMove) => {
-        console.log(`adding move ${move}`)
         this.squares[move.from.first][move.from.second].addMoveFrom(move)
       }
     )
