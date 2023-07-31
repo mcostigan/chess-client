@@ -13,18 +13,34 @@ import {PieceDrawerService} from "./piece-drawer.service";
     `
       .piece {
         font-size: xxx-large;
-        horiz-align: center;
+        text-align: center;
+        height: 100%;
+        width: 100%;
       }
     `
   ]
 })
 export class PieceComponent implements OnInit {
-  @Input() piece!: Piece
+  _piece!: Piece;
+  get piece(): Piece {
+    return this._piece;
+  }
+
+  @Input() set piece(value: Piece) {
+    this._piece = value;
+    this.setUnicode();
+  }
+
   unicode: string = ''
 
-  constructor(private pieceDrawer: PieceDrawerService) {}
+  constructor(private pieceDrawer: PieceDrawerService) {
+  }
 
   ngOnInit(): void {
+    this.setUnicode()
+  }
+
+  setUnicode() {
     this.unicode = this.pieceDrawer.getUnicode(this.piece.type, this.piece.color)
   }
 
