@@ -6,9 +6,9 @@ import {IServerMove} from "../../../model/move";
   selector: 'app-square',
   template: `
     <div [className]="squareColor()" (click)="onClick()">
-      <div [className]="(isHighlight() ? 'highlight' : '')">
+      <div [className]="(isHighlight() ? 'highlight mask' : 'mask')">
         <div class="square-contents" *ngIf="square.piece">
-          <app-piece [piece]="square.piece"></app-piece>
+          <app-piece class="piece" [piece]="square.piece"></app-piece>
         </div>
 
         <div class="square-contents" *ngIf="!square.piece">
@@ -33,10 +33,20 @@ import {IServerMove} from "../../../model/move";
         background-color: white;
       }
 
-      .highlight {
-        background-color: aquamarine;
+      .mask {
         height: 100%;
         width: 100%;
+      }
+
+      .highlight {
+        background-color: rgba(200, 0, 0, .5);
+        height: 100%;
+        width: 100%;
+      }
+
+      .piece {
+        height: 100%;
+        width: 100%
       }
 
       .square-contents {
@@ -78,7 +88,7 @@ export class SquareComponent implements OnInit {
     }
   }
 
-  isHighlight(){
+  isHighlight() {
     return this.square.movesTo.length > 0
   }
 
