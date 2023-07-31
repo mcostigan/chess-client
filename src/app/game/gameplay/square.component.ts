@@ -60,7 +60,7 @@ export class SquareComponent implements OnInit {
   @Input() square!: Square
   @Input() position!: [number, number]
   @Input() highlightMoves!: (moves: IServerMove[]) => void
-  @Input() resetMoves!: () => void
+  @Input() removeHighlight!: () => void
   @Input() sendMove!: (move: IServerMove) => void
 
   constructor() {
@@ -82,9 +82,10 @@ export class SquareComponent implements OnInit {
       // TODO: handle multiple moves
       this.sendMove(this.square.movesTo[0])
     } else if (this.square.movesFrom.length) {
+      this.removeHighlight()
       this.highlightMoves(this.square.movesFrom)
     } else {
-      this.resetMoves()
+      this.removeHighlight()
     }
   }
 

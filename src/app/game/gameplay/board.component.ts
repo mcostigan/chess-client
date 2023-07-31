@@ -19,7 +19,7 @@ import {IServerMove} from "../../../model/move";
       <div class="rank" *ngFor="let rank of board.squares; let i = index">
         <app-square [position]="[i,j]" [square]="square"
                     [highlightMoves]="highlightMoves.bind(this)"
-                    [resetMoves]="board.resetMoves.bind(board)"
+                    [removeHighlight]="removeHighlight.bind(this)"
                     [sendMove]="sendMove.bind(this)"
                     *ngFor="let square of rank let j=index"></app-square>
       </div>
@@ -63,13 +63,19 @@ export class BoardComponent implements OnInit {
     })
   }
 
-  sendMove(move: IServerMove){
+  sendMove(move: IServerMove) {
     this.gameService.sendMove(this.gameId, move)
   }
 
   highlightMoves(moves: IServerMove[]) {
     moves.forEach((move) => {
       this.board.squares[move.to.first][move.to.second].addMoveTo(move)
+    })
+  }
+
+  removeHighlight() {
+    this.board.squares.forEach((row) => {
+      row.forEach((sq) => sq.movesTo = [])
     })
   }
 
