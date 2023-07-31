@@ -12,23 +12,24 @@ export class MoveExecutionService {
   }
 
   execute(board: Board, move: IServerMove) {
-    let piece = board.squares[move.from.first][move.from.second]!!
+    let square = board.squares[move.from.first][move.from.second]
     let targetSquare = board.squares[move.to.first][move.to.second]
+
+    if (targetSquare.piece != null) {
+      targetSquare.piece!!.kill()
+    }
 
     this.move(move.from, move.to, board)
     if (move.isCastle) {
       this.executeCaste(board, move)
     }
 
-    if (targetSquare != null) {
-      targetSquare.piece!!.kill()
-    }
-
     if (move.isPromotion) {
-      let promotable = piece as unknown as Promotable
+      let promotable = square as unknown as Promotable
       let target: PieceType = PieceType[move.promotionTarget!! as keyof typeof PieceType];
       promotable.promote(target)
     }
+    console.log(board.squares)
   }
 
   private executeCaste(board: Board, move: IServerMove) {
