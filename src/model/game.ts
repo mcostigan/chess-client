@@ -30,7 +30,7 @@ export class Game {
   constructor(public id: string, public white: IPlayer, public black: IPlayer | null, public moveExecutionService: MoveExecutionService) {
     if (black) {
       this.setState(new LiveGameState(this, this.setState.bind(this), this.setTurn.bind(this)))
-      this.board = Board.build()
+      this.board = Board.build(PieceColor.BLACK)
     } else {
       this.setState(new PendingGameState(this, this.setState.bind(this), this.setTurn.bind(this)))
     }
@@ -98,7 +98,7 @@ class PendingGameState extends GameState {
   addPlayer(player: IPlayer): void {
     this.context.black = player
     let newState = new LiveGameState(this.context, this.updateState, this.updateTurn)
-    this.context.board = Board.build()
+    this.context.board = Board.build(PieceColor.WHITE)
     this.updateState(newState)
   }
 
