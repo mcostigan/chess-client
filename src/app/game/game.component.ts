@@ -3,6 +3,7 @@ import {GameService} from "./game.service";
 import {Game, GameState} from "../../model/game";
 import {GameStateComponent, GameStateComponentFactory} from "./gameState/game-state";
 import {GameStateDirective} from "./gameState/game-state.directive";
+import {IServerMove} from "../../model/move";
 
 @Component({
   selector: 'app-game',

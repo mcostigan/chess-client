@@ -25,6 +25,7 @@ import {ActivatedRoute} from "@angular/router";
         border: 1px solid black;
         width: 80px;
         height: 80px;
+        box-sizing: border-box;
       }
 
       .dark-square {
@@ -60,7 +61,7 @@ import {ActivatedRoute} from "@angular/router";
         cursor: pointer;
       }
 
-      .clickable:hover{
+      .clickable:hover {
         border: 2px solid black;
       }
     `
@@ -73,13 +74,14 @@ export class SquareComponent implements OnInit {
   @Input() removeHighlight!: () => void
   @Input() sendMove!: (move: IServerMove) => void
 
-  private availableMoves: IServerMove[] = []
+  private movesFrom: IServerMove[] = []
+  movesTo: IServerMove[] = []
 
   constructor(private gameService: GameService, private activatedRoute: ActivatedRoute) {
     let gameId = this.activatedRoute.snapshot.paramMap.get('gameId')!!
     this.gameService.subscribeToMyMoves(gameId).subscribe(
       (moves) => {
-        this.availableMoves = moves.filter((move) => move.from.first == this.position[0] && move.from.second == this.position[1])
+        this.movesFrom = moves.filter((move) => move.from.first == this.position[0] && move.from.second == this.position[1])
       }
     )
   }
@@ -88,30 +90,32 @@ export class SquareComponent implements OnInit {
   }
 
   onClick() {
-    if (this.square.movesTo.length) {
+    console.log("clicked square")
+    console.log(this)
+    if (this.movesTo.length) {
       // TODO: handle multiple moves
-      this.sendMove(this.square.movesTo[0])
-    } else if (this.availableMoves.length) {
+      this.sendMove(this.movesTo[0])
+    } else if (this.movesFrom.length) {
       this.removeHighlight()
-      this.highlightMoves(this.availableMoves)
+      this.highlightMoves(this.movesFrom)
     } else {
       this.removeHighlight()
     }
   }
 
   isHighlight() {
-    return this.square.movesTo.length > 0
+    return this.movesTo.length > 0
   }
 
-  get classes(): string{
+  get classes(): string {
     let classes: string[] = ['square']
     if ((this.position[0] + this.position[1]) % 2 == 1) {
-       classes.push("dark-square")
+      classes.push("dark-square")
     } else {
       classes.push("light-square")
     }
 
-    if (this.availableMoves.length){
+    if (this.movesFrom.length || this.movesTo.length) {
       classes.push("clickable")
     }
 

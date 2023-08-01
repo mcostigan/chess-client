@@ -11,12 +11,4 @@ export class Square {
     this.position = position;
     this.piece = piece;
   }
-
-  clearMoves(){
-    this.movesTo = []
-  }
-
-  addMoveTo(movesTo: IServerMove) {
-    this.movesTo.push(movesTo)
-  }
 }

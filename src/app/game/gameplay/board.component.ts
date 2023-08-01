@@ -1,8 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {Board} from "../../../model/board";
 import {GameService} from "../game.service";
 import {ActivatedRoute} from "@angular/router";
 import {IServerMove} from "../../../model/move";
+import {SquareComponent} from "./square.component";
 
 @Component({
   selector: 'board',
@@ -31,8 +32,9 @@ import {IServerMove} from "../../../model/move";
     `
   ]
 })
-export class BoardComponent implements OnInit {
+export class BoardComponent implements OnInit, AfterViewInit {
   @Input() board!: Board
+  @ViewChildren(SquareComponent) squares!: QueryList<SquareComponent>
 
   private readonly gameId: string
 
@@ -43,20 +45,25 @@ export class BoardComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  ngAfterViewInit(): void {
+  }
+
   sendMove(move: IServerMove) {
     this.gameService.sendMove(this.gameId, move)
     this.removeHighlight()
   }
 
   highlightMoves(moves: IServerMove[]) {
+    console.log(moves)
     moves.forEach((move) => {
-      this.board.squares[move.to.first][move.to.second].addMoveTo(move)
+      this.squares.get(move.to.first * 8 + move.to.second)!!.movesTo = [move]
+      console.log(this.squares.get(move.to.first * 8 + move.to.second))
     })
   }
 
   removeHighlight() {
-    this.board.squares.forEach((row) => {
-      row.forEach((sq) => sq.movesTo = [])
+    this.squares.forEach((square) => {
+      square.movesTo = []
     })
   }
 

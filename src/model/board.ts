@@ -7,18 +7,6 @@ export class Board {
   private constructor(public squares: Square[][]) {
   }
 
-  resetMoves() {
-    this.squares.forEach((row: Square[]) => {
-        row.forEach(
-          (sq: Square) => {
-            sq.clearMoves()
-          }
-        )
-      }
-    )
-
-  }
-
 
   private static pieceFactory = new PieceFactory()
 
