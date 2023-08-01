@@ -7,6 +7,7 @@ import { BoardComponent } from './gameplay/board.component';
 import { PieceComponent } from './gameplay/piece.component';
 import { SquareComponent } from './gameplay/square.component';
 import {FormsModule} from "@angular/forms";
+import { PlayerComponent } from './player.component';
 
 const routes: Routes = [
   {path: "", component: NewGameComponent},
@@ -19,7 +20,8 @@ const routes: Routes = [
     GameComponent,
     BoardComponent,
     PieceComponent,
-    SquareComponent
+    SquareComponent,
+    PlayerComponent
   ],
   imports: [
     CommonModule,

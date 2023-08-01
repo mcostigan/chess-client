@@ -12,6 +12,7 @@ export interface IGame {
 export interface IPlayer {
   id: string
   name: string
+  photo: string
 }
 
 export class Game {

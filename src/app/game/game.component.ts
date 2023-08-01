@@ -9,16 +9,25 @@ import {Game} from "../../model/game";
       {{game.getState()}}
     </div>
 
-    <div>
-      {{game?.white?.name}} vs {{game?.black?.name}}
+    <div class="board">
+      <player [player]="game.white" [turn]="game.turn" [color]="0" ></player>
+      <board [board]="game.board!!" *ngIf="game.getState() === 'Live'">
+      </board>
+      <player [player]="game.black" [turn]="game.turn" [color]="1" class="opponent"></player>
     </div>
 
-    <board [board]="game.board!!" *ngIf="game.getState() === 'Live'">
-
-    </board>
 
   `,
-  styles: []
+  styles: [
+    `
+      .board {
+        width: max-content;
+      }
+      .opponent {
+        float: right;
+      }
+    `
+  ]
 })
 export class GameComponent implements OnInit {
 
