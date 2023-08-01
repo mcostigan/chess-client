@@ -26,8 +26,8 @@ export class GameStateComponentFactory {
   selector: 'pending-game',
   template: `
     <div class="pending-game">
-      <player [player]="game.white" [turn]="game.turn" [color]="0"></player>
-      <player [player]="pendingPlayer" [turn]="game.turn" [color]="1"></player>
+      <player [player]="game.white" [turn]="null" [color]="0"></player>
+      <player [player]="pendingPlayer" [turn]="null" [color]="1"></player>
     </div>
   `,
   styles: [
@@ -37,6 +37,7 @@ export class GameStateComponentFactory {
         flex-direction: row;
         justify-content: space-between;
         width: 100%;
+        column-gap: 100px;
       }
     `
   ]

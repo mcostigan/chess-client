@@ -7,9 +7,22 @@ import {GameStateDirective} from "./gameState/game-state.directive";
 @Component({
   selector: 'app-game',
   template: `
-    <ng-template gameState></ng-template>
+    <div class="game">
+      <div>
+        <ng-template gameState></ng-template>
+      </div>
+    </div>
+
   `,
   styles: [
+    `
+      .game {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        width: 100%;
+      }
+    `
   ]
 })
 export class GameComponent implements OnInit {

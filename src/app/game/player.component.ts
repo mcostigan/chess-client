@@ -24,7 +24,7 @@ import {PieceColor} from "../../model/piece";
       }
 
       .isTurn {
-        border: 5px solid red;
+        border: 5px solid gray;
       }
 
       .player-photo {
@@ -48,7 +48,7 @@ import {PieceColor} from "../../model/piece";
 export class PlayerComponent implements OnInit {
   @Input() player: IPlayer | null = null
   @Input() color!: PieceColor
-  @Input() turn!: PieceColor
+  @Input() turn: PieceColor | null = null
 
   constructor() {
   }
