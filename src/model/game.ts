@@ -2,6 +2,7 @@ import {Board} from "./board";
 import {MoveExecutionService} from "../app/game/move-execution.service";
 import {IServerMove} from "./move";
 import {PieceColor} from "./piece";
+import {Observable, of, Subject} from "rxjs";
 
 export interface IGame {
   id: string
@@ -16,7 +17,8 @@ export interface IPlayer {
 }
 
 export class Game {
-  private state: GameState
+  private _state!: GameState
+  private stateSubject = new Subject<GameState>()
   private _turn: PieceColor = PieceColor.WHITE
   board: Board | null = null
 
@@ -27,19 +29,20 @@ export class Game {
 
   constructor(public id: string, public white: IPlayer, public black: IPlayer | null, public moveExecutionService: MoveExecutionService) {
     if (black) {
-      this.state = new LiveGameState(this, this.setState.bind(this), this.setTurn.bind(this))
+      this.setState(new LiveGameState(this, this.setState.bind(this), this.setTurn.bind(this)))
       this.board = Board.build()
     } else {
-      this.state = new PendingGameState(this, this.setState.bind(this), this.setTurn.bind(this))
+      this.setState(new PendingGameState(this, this.setState.bind(this), this.setTurn.bind(this)))
     }
   }
 
   addPlayer(player: IPlayer) {
-    this.state.addPlayer(player)
+    this._state.addPlayer(player)
   }
 
   private setState(state: GameState) {
-    this.state = state
+    this._state = state
+    this.stateSubject.next(this._state)
   }
 
   private setTurn(turn: PieceColor) {
@@ -47,23 +50,29 @@ export class Game {
   }
 
   getState() {
-    return this.state.name
+    return this._state.name
   }
 
   move(move: IServerMove) {
-    this.state.move(move)
+    this._state.move(move)
   }
 
   set availableMoves(value: IServerMove[]) {
-    this.state.availableMoves = value
+    this._state.availableMoves = value
   }
 
   get availableMoves(): IServerMove[] {
-    return this.state.availableMoves;
+    return this._state.availableMoves;
   }
+
+  subscribeToState(): Observable<GameState>{
+    return this.stateSubject
+  }
+
+
 }
 
-abstract class GameState {
+export abstract class GameState {
   protected constructor(protected context: Game, protected updateState: (s: GameState) => void, protected updateTurn: (t: PieceColor) => void) {
   }
 
