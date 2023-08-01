@@ -4,7 +4,6 @@ import {Piece} from "./piece";
 export class Square {
   position: Pair<number>
   piece: Piece | null
-  movesFrom: IServerMove[] = []
   movesTo: IServerMove[] = []
 
 
@@ -14,12 +13,7 @@ export class Square {
   }
 
   clearMoves(){
-    this.movesFrom = []
     this.movesTo = []
-  }
-
-  addMoveFrom(movesFrom: IServerMove) {
-    this.movesFrom.push(movesFrom)
   }
 
   addMoveTo(movesTo: IServerMove) {

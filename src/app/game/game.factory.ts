@@ -28,12 +28,6 @@ export class GameFactory {
       }
     )
 
-    availableMoves(game.id).subscribe(
-      (moves: IServerMove[]) => {
-        g.availableMoves = moves
-      }
-    )
-
     return g
   }
 }

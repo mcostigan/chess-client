@@ -57,14 +57,6 @@ export class Game {
     this._state.move(move)
   }
 
-  set availableMoves(value: IServerMove[]) {
-    this._state.availableMoves = value
-  }
-
-  get availableMoves(): IServerMove[] {
-    return this._state.availableMoves;
-  }
-
   subscribeToState(): Observable<GameState> {
     return this.stateSubject
   }
@@ -81,9 +73,6 @@ export abstract class GameState {
   abstract addPlayer(player: IPlayer): void
 
   abstract move(move: IMoveResult): void
-
-  abstract get availableMoves(): IServerMove[]
-  abstract set availableMoves(value: IServerMove[])
 
 }
 
@@ -103,13 +92,6 @@ class PendingGameState extends GameState {
   }
 
   move(move: IMoveResult): void {
-  }
-
-  get availableMoves(): IServerMove[] {
-    return []
-  }
-
-  set availableMoves(value: IServerMove[]) {
   }
 }
 
@@ -139,15 +121,6 @@ class LiveGameState extends GameState {
     }
   }
 
-
-  get availableMoves(): IServerMove[] {
-    return this.context.board!!.availableMoves;
-  }
-
-  set availableMoves(value: IServerMove[]) {
-    this.context.board!!.availableMoves = value
-  }
-
 }
 
 class CompleteGameState extends GameState {
@@ -163,13 +136,5 @@ class CompleteGameState extends GameState {
   readonly name: string = "Complete"
 
   move(move: IMoveResult): void {
-  }
-
-
-  get availableMoves(): IServerMove[] {
-    return []
-  }
-
-  set availableMoves(value: IServerMove[]) {
   }
 }

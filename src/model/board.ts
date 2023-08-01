@@ -19,15 +19,6 @@ export class Board {
 
   }
 
-  set availableMoves(moves: IServerMove[]) {
-    this.resetMoves()
-    moves.forEach(
-      (move: IServerMove) => {
-        this.squares[move.from.first][move.from.second].addMoveFrom(move)
-      }
-    )
-  }
-
 
   private static pieceFactory = new PieceFactory()
 
