@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {IPlayer} from "../../model/game";
-import {PieceColor} from "../../model/piece";
+import {PieceColor, PieceType} from "../../model/piece";
+import {PieceDrawerService} from "./gameplay/piece-drawer.service";
 
 @Component({
   selector: 'player',
@@ -9,7 +10,11 @@ import {PieceColor} from "../../model/piece";
       <div class="player-photo">
         <img src="{{player.photo}}" alt="">
       </div>
-      <div class="player-name">{{player.name}}</div>
+      <div class="player-details">
+        <div class="player-name">{{player.name}}</div>
+        <div class="player-color">{{examplePiece}}</div>
+      </div>
+
     </div>
   `,
   styles: [
@@ -21,6 +26,7 @@ import {PieceColor} from "../../model/piece";
         flex-direction: row;
         width: 200px;
         padding: 5px;
+        column-gap: 25px;
       }
 
       .isTurn {
@@ -39,8 +45,17 @@ import {PieceColor} from "../../model/piece";
         border-radius: 50px;
       }
 
+      .player-details{
+        display: flex;
+        flex-direction: column;
+      }
+
       .player-name {
         font-size: large;
+      }
+
+      .player-color {
+        font-size: x-large;
       }
     `
   ]
@@ -49,11 +64,13 @@ export class PlayerComponent implements OnInit {
   @Input() player: IPlayer | null = null
   @Input() color!: PieceColor
   @Input() turn: PieceColor | null = null
+  examplePiece: string = ''
 
-  constructor() {
+  constructor(private pieceDrawerService: PieceDrawerService) {
   }
 
   ngOnInit(): void {
+    this.examplePiece = this.pieceDrawerService.getUnicode(PieceType.PAWN, this.color)
   }
 
   isTurn(): boolean {
