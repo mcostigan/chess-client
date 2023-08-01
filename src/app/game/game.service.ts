@@ -38,10 +38,16 @@ export class GameService {
     )
   }
 
+  private movesObservables: Map<string, Observable<IServerMove[]>> = new Map<string, Observable<IServerMove[]>>()
+
   subscribeToMyMoves(gameId: string): Observable<IServerMove[]> {
-    return this.webSocketService.subscription(`/user/topic/game/${gameId}/moves`).pipe(
-      map((m: IMessage) => JSON.parse(m.body) as IServerMove[])
-    )
+    if (!this.movesObservables.has(gameId)) {
+      this.movesObservables.set(gameId, this.webSocketService.subscription(`/user/topic/game/${gameId}/moves`).pipe(
+        map((m: IMessage) => JSON.parse(m.body) as IServerMove[])
+      ))
+    }
+    return this.movesObservables.get(gameId)!!
+
   }
 
   sendMove(gameId: string, move: any) {
