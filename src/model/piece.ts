@@ -7,7 +7,7 @@ export abstract class Piece {
     return this._isAlive;
   }
 
-  protected constructor(readonly color: PieceColor, readonly isMyPiece: boolean) {
+  protected constructor(readonly color: PieceColor) {
   }
 
 
@@ -21,21 +21,25 @@ export abstract class Piece {
 }
 
 export class PieceFactory {
-  get(type: PieceType, color: PieceColor, myColor: PieceColor): Piece {
+  get(type: PieceType, color: PieceColor): Piece {
     switch (type) {
       case PieceType.BISHOP:
-        return new Bishop(color, color == myColor)
+        return new Bishop(color)
       case PieceType.KING:
-        return new King(color, color == myColor)
+        return new King(color)
       case PieceType.KNIGHT:
-        return new Knight(color, color == myColor)
+        return new Knight(color)
       case PieceType.PAWN:
-        return new Pawn(color, color == myColor)
+        return new Pawn(color)
       case PieceType.QUEEN:
-        return new Queen(color, color == myColor)
+        return new Queen(color)
       case PieceType.ROOK:
-        return new Rook(color, color == myColor)
+        return new Rook(color)
     }
+  }
+
+  getSquare(type: PieceType, color: PieceColor, position: Pair<number>): Square {
+    return new Square(position, this.get(type, color))
   }
 }
 
@@ -59,8 +63,8 @@ export interface Promotable {
 
 class Pawn extends Piece implements Promotable {
 
-  constructor(color: PieceColor, isMyPiece: boolean) {
-    super(color, isMyPiece);
+  constructor(color: PieceColor) {
+    super(color);
   }
 
   type: PieceType = PieceType.PAWN;
@@ -72,8 +76,8 @@ class Pawn extends Piece implements Promotable {
 
 class Rook extends Piece {
 
-  constructor(color: PieceColor, isMyPiece: boolean) {
-    super(color, isMyPiece);
+  constructor(color: PieceColor) {
+    super(color);
   }
 
   type: PieceType = PieceType.ROOK;
@@ -81,8 +85,8 @@ class Rook extends Piece {
 
 class Bishop extends Piece {
 
-  constructor(color: PieceColor, isMyPiece: boolean) {
-    super(color, isMyPiece);
+  constructor(color: PieceColor) {
+    super(color);
   }
 
   type: PieceType = PieceType.BISHOP;
@@ -90,8 +94,8 @@ class Bishop extends Piece {
 
 class Knight extends Piece {
 
-  constructor(color: PieceColor, isMyPiece: boolean) {
-    super(color, isMyPiece);
+  constructor(color: PieceColor) {
+    super(color);
   }
 
   type: PieceType = PieceType.KNIGHT;
@@ -99,8 +103,8 @@ class Knight extends Piece {
 
 class Queen extends Piece {
 
-  constructor(color: PieceColor, isMyPiece: boolean) {
-    super(color, isMyPiece);
+  constructor(color: PieceColor) {
+    super(color);
   }
 
   type: PieceType = PieceType.QUEEN;
@@ -108,8 +112,8 @@ class Queen extends Piece {
 
 class King extends Piece {
 
-  constructor(color: PieceColor, isMyPiece: boolean) {
-    super(color, isMyPiece);
+  constructor(color: PieceColor) {
+    super(color);
   }
 
   type: PieceType = PieceType.KING;
