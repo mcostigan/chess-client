@@ -15,7 +15,7 @@ export interface IServerMove extends IClientMove{
 
 export interface IMoveResult {
   move: IServerMove
-  status: string
+  gameStatus: string
 }
 
 export interface Pair<T> {

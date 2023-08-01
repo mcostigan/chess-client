@@ -12,6 +12,8 @@ export class GameStateComponentFactory {
         return PendingGameComponent
       case "Live":
         return LiveGameComponent
+      case "Complete":
+        return CompleteGameComponent
       default:
         return PendingGameComponent
     }
@@ -49,14 +51,18 @@ export class PendingGameComponent implements OnInit, GameStateComponent {
 
   game!: Game
 
-  pendingPlayer: IPlayer = {id: '', name: 'Waiting...', 'photo': ''}
+  pendingPlayer: IPlayer = {
+    id: '',
+    name: 'Waiting...',
+    'photo': 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
+  }
 }
 
 
 @Component({
   selector: 'live-game',
   template: `
-    <div class="board">
+    <div class="live-game">
       <player [player]="game.white" [turn]="game.turn" [color]="0"></player>
       <board [board]="game.board!!">
       </board>
@@ -65,7 +71,7 @@ export class PendingGameComponent implements OnInit, GameStateComponent {
   `,
   styles: [
     `
-      .board {
+      .live-game {
         width: max-content;
       }
 
@@ -76,6 +82,37 @@ export class PendingGameComponent implements OnInit, GameStateComponent {
   ]
 })
 export class LiveGameComponent implements OnInit, GameStateComponent {
+
+  constructor() {
+  }
+
+  ngOnInit(): void {
+  }
+
+  game!: Game
+
+}
+
+@Component({
+  selector: 'complete-game',
+  template: `
+    <div class="complete-game">
+      <div>done</div>
+    </div>
+  `,
+  styles: [
+    `
+      .live-game {
+        width: max-content;
+      }
+
+      .opponent {
+        float: right;
+      }
+    `
+  ]
+})
+export class CompleteGameComponent implements OnInit, GameStateComponent {
 
   constructor() {
   }

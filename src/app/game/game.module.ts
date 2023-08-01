@@ -9,7 +9,7 @@ import {SquareComponent} from './gameplay/square.component';
 import {FormsModule} from "@angular/forms";
 import {PlayerComponent} from './player.component';
 import {GameStateDirective} from './gameState/game-state.directive';
-import {LiveGameComponent, PendingGameComponent} from './gameState/game-state'
+import {CompleteGameComponent, LiveGameComponent, PendingGameComponent} from './gameState/game-state'
 
 const routes: Routes = [
   {path: "", component: NewGameComponent},
@@ -26,7 +26,8 @@ const routes: Routes = [
     PlayerComponent,
     GameStateDirective,
     PendingGameComponent,
-    LiveGameComponent
+    LiveGameComponent,
+    CompleteGameComponent
   ],
   imports: [
     CommonModule,

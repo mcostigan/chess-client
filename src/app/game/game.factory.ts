@@ -24,7 +24,7 @@ export class GameFactory {
 
     onMove(game.id).subscribe(
       (move: IMoveResult) => {
-        g.move(move.move)
+        g.move(move)
       }
     )
 

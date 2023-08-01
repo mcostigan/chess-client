@@ -1,8 +1,8 @@
 import {Board} from "./board";
 import {MoveExecutionService} from "../app/game/move-execution.service";
-import {IServerMove} from "./move";
+import {IMoveResult, IServerMove} from "./move";
 import {PieceColor} from "./piece";
-import {Observable, of, Subject} from "rxjs";
+import {Observable, Subject} from "rxjs";
 
 export interface IGame {
   id: string
@@ -53,7 +53,7 @@ export class Game {
     return this._state.name
   }
 
-  move(move: IServerMove) {
+  move(move: IMoveResult) {
     this._state.move(move)
   }
 
@@ -65,7 +65,7 @@ export class Game {
     return this._state.availableMoves;
   }
 
-  subscribeToState(): Observable<GameState>{
+  subscribeToState(): Observable<GameState> {
     return this.stateSubject
   }
 
@@ -80,7 +80,7 @@ export abstract class GameState {
 
   abstract addPlayer(player: IPlayer): void
 
-  abstract move(move: IServerMove): void
+  abstract move(move: IMoveResult): void
 
   abstract get availableMoves(): IServerMove[]
   abstract set availableMoves(value: IServerMove[])
@@ -102,7 +102,7 @@ class PendingGameState extends GameState {
     this.updateState(newState)
   }
 
-  move(move: IServerMove): void {
+  move(move: IMoveResult): void {
   }
 
   get availableMoves(): IServerMove[] {
@@ -125,12 +125,17 @@ class LiveGameState extends GameState {
 
   readonly name: string = "Live"
 
-  move(move: IServerMove): void {
+  move(moveResult: IMoveResult): void {
+    let move = moveResult.move
     this.context.moveExecutionService.execute(this.context.board!!, move)
     if (move.color === 'WHITE') {
       this.updateTurn(PieceColor.BLACK)
     } else {
       this.updateTurn(PieceColor.WHITE)
+    }
+
+    if (moveResult.gameStatus == "CHECKMATE"){
+      this.updateState(new CompleteGameState(this.context, this.updateState, this.updateTurn))
     }
   }
 
@@ -140,8 +145,31 @@ class LiveGameState extends GameState {
   }
 
   set availableMoves(value: IServerMove[]) {
-    // TODO: filter move for user color
     this.context.board!!.availableMoves = value
   }
 
+}
+
+class CompleteGameState extends GameState {
+
+
+  constructor(context: Game, updateState: (s: GameState) => void, updateTurn: (t: PieceColor) => void) {
+    super(context, updateState, updateTurn);
+  }
+
+  addPlayer(player: IPlayer): void {
+  }
+
+  readonly name: string = "Complete"
+
+  move(move: IMoveResult): void {
+  }
+
+
+  get availableMoves(): IServerMove[] {
+    return []
+  }
+
+  set availableMoves(value: IServerMove[]) {
+  }
 }
