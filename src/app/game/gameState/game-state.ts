@@ -98,17 +98,28 @@ export class LiveGameComponent implements OnInit, GameStateComponent {
   selector: 'complete-game',
   template: `
     <div class="complete-game">
-      <div>done</div>
+      <board [board]="game.board!!"></board>
+      <div class="pop-up">
+        <h1>Checkmate!</h1>
+      </div>
     </div>
   `,
   styles: [
     `
-      .live-game {
-        width: max-content;
+      .pop-up {
+        background-color: rgba(255, 255, 255, .5);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
       }
 
-      .opponent {
-        float: right;
+      h1 {
+        text-align: center;
       }
     `
   ]
