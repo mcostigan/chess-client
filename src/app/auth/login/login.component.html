@@ -1,0 +1,12 @@
+<div class="user-input-form">
+  <h1>{{header}}</h1>
+  <div class="user-name">
+    <input [(ngModel)]="username" placeholder="User">
+  </div>
+  <div class="password">
+    <input [(ngModel)]="password" type="password" placeholder="Password">
+  </div>
+  <div class="submit">
+    <button (click)="onClick()">{{header}}</button>
+  </div>
+</div>

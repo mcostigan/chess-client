@@ -20,7 +20,12 @@ export class AuthService {
     )
   }
 
-  register(user: string, password: string) {
-
+  register(name: string, password: string) {
+    this.httpService.post<{ token: string }>("register", {name, password}).subscribe(
+      (token) => {
+        this.tokenService.set(token.token)
+        void this.router.navigateByUrl("")
+      }
+    )
   }
 }
