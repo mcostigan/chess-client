@@ -27,6 +27,7 @@ import {PieceDrawerService} from "./gameplay/piece-drawer.service";
         width: 200px;
         padding: 5px;
         column-gap: 25px;
+        box-sizing: border-box;
       }
 
       .isTurn {
@@ -45,7 +46,7 @@ import {PieceDrawerService} from "./gameplay/piece-drawer.service";
         border-radius: 50px;
       }
 
-      .player-details{
+      .player-details {
         display: flex;
         flex-direction: column;
       }

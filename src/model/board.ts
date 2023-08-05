@@ -1,13 +1,24 @@
-import {PieceColor, PieceFactory, PieceType} from "./piece";
-import {IServerMove} from "./move";
+import {Piece, PieceColor, PieceFactory, PieceType} from "./piece";
 import {Square} from "./square";
 
 export class Board {
+  private captured: Map<PieceColor, Piece[]> = new Map<PieceColor, Piece[]>([
+    [PieceColor.WHITE, []],
+    [PieceColor.BLACK, []]
+  ])
 
-  private constructor(public squares: Square[][]) {}
-
+  private constructor(public squares: Square[][]) {
+  }
 
   private static pieceFactory = new PieceFactory()
+
+  capture(piece: Piece) {
+    this.captured.get(piece.color)!!.push(piece)
+  }
+
+  capturedPieces(pieceColor: PieceColor){
+    return this.captured.get(pieceColor)!!
+  }
 
   static build(): Board {
     let squares: Square[][] = new Array(8)

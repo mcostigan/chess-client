@@ -12,11 +12,11 @@ export class MoveExecutionService {
   }
 
   execute(board: Board, move: IServerMove) {
-    let square = board.squares[move.from.first][move.from.second]
     let targetSquare = board.squares[move.to.first][move.to.second]
 
     if (targetSquare.piece != null) {
       targetSquare.piece!!.kill()
+      board.capture(targetSquare.piece)
     }
 
     this.move(move.from, move.to, board)

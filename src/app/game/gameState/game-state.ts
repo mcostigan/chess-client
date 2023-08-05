@@ -64,12 +64,10 @@ export class PendingGameComponent implements OnInit, GameStateComponent {
   selector: 'live-game',
   template: `
     <div class="live-game">
-      <player [player]="game.white" [turn]="game.turn" [color]="0"></player>
+      <app-game-player [game]="game" [color]="0"></app-game-player>
       <board [board]="game.board!!">
       </board>
-      <div class="opponent">
-        <player [player]="game.black" [turn]="game.turn" [color]="1"></player>
-      </div>
+      <app-game-player [game]="game" [color]="1"></app-game-player>
 
     </div>
   `,
@@ -77,10 +75,6 @@ export class PendingGameComponent implements OnInit, GameStateComponent {
     `
       .live-game {
         width: max-content;
-      }
-
-      .opponent {
-        float: right;
       }
     `
   ]
