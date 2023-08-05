@@ -67,7 +67,10 @@ export class PendingGameComponent implements OnInit, GameStateComponent {
       <player [player]="game.white" [turn]="game.turn" [color]="0"></player>
       <board [board]="game.board!!">
       </board>
-      <player [player]="game.black" [turn]="game.turn" [color]="1" class="opponent"></player>
+      <div class="opponent">
+        <player [player]="game.black" [turn]="game.turn" [color]="1"></player>
+      </div>
+
     </div>
   `,
   styles: [
