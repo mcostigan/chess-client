@@ -10,12 +10,17 @@ import {FormsModule} from "@angular/forms";
 import {PlayerComponent} from './player.component';
 import {GameStateDirective} from './gameState/game-state.directive';
 import {CompleteGameComponent, LiveGameComponent, PendingGameComponent} from './gameState/game-state';
-import { CapturedPiecesComponent } from './captured-pieces.component';
-import { GamePlayerComponent } from './game-player.component'
+import {CapturedPiecesComponent} from './captured-pieces.component';
+import {GamePlayerComponent} from './game-player.component'
+import {AuthGuard} from "../auth/auth.guard";
 
 const routes: Routes = [
-  {path: "", component: NewGameComponent},
-  {path: "game/:gameId", component: GameComponent}
+  {
+    path: "", canActivate: [AuthGuard], children: [
+      {path: "", component: NewGameComponent},
+      {path: "game/:gameId", component: GameComponent}
+    ]
+  }
 ]
 
 @NgModule({
