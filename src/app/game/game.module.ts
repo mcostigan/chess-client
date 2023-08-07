@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {NewGameComponent} from './new-game.component';
+import {NewGameComponent} from './new-game/new-game.component';
 import {RouterModule, Routes} from "@angular/router";
 import {GameComponent} from "./game.component";
 import {BoardComponent} from './gameplay/board.component';
@@ -13,6 +13,7 @@ import {CompleteGameComponent, LiveGameComponent, PendingGameComponent} from './
 import {CapturedPiecesComponent} from './captured-pieces.component';
 import {GamePlayerComponent} from './game-player.component'
 import {AuthGuard} from "../auth/auth.guard";
+import { ExperienceSelectorComponent } from './new-game/experience-selector.component';
 
 const routes: Routes = [
   {
@@ -36,7 +37,8 @@ const routes: Routes = [
     LiveGameComponent,
     CompleteGameComponent,
     CapturedPiecesComponent,
-    GamePlayerComponent
+    GamePlayerComponent,
+    ExperienceSelectorComponent
   ],
   imports: [
     CommonModule,

@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {GameService} from "./game.service";
+import {GameService} from "../game.service";
+import {Experience} from "./experience-selector.component";
 
 @Component({
   selector: 'app-game',
@@ -9,10 +10,12 @@ import {GameService} from "./game.service";
         <h1>Create Game</h1>
       </div>
       <div class="center-horiz">
-        <input [(ngModel)]="minExperience" placeholder="Minimum Experience">
+        <label>Min Experience</label>
+        <app-experience-selector [(experience)]="minExperience"></app-experience-selector>
       </div>
       <div class="center-horiz">
-        <input [(ngModel)]="maxExperience" placeholder="Maximum Experience">
+        <label>Max Experience</label>
+        <app-experience-selector [(experience)]="maxExperience"></app-experience-selector>
       </div>
       <div class="center-horiz">
         <button (click)="createGame()">Create</button>
@@ -40,8 +43,8 @@ import {GameService} from "./game.service";
   ]
 })
 export class NewGameComponent implements OnInit {
-  minExperience: string = ""
-  maxExperience: string = ""
+  minExperience: Experience = Experience.NOVICE
+  maxExperience: Experience = Experience.EXPERT
 
   constructor(private gameService: GameService) {
   }
@@ -50,7 +53,7 @@ export class NewGameComponent implements OnInit {
   }
 
   createGame() {
-    this.gameService.createGame(this.minExperience, this.maxExperience)
+    this.gameService.createGame(this.minExperience.valueOf().toUpperCase(), this.maxExperience.valueOf().toUpperCase())
   }
 
 }
